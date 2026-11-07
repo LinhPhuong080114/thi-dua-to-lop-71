@@ -316,12 +316,13 @@ const firebaseConfig = {
         }
         initAuth();
 
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                state.user = user;
-                subscribeToRaceState();
-            } else {
-                loadLocalState();
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        state.user = user;
+
+        console.log("UID QUAN TRI:", user.uid);
+
+        subscribeToRaceState();
                 render();
             }
         });
