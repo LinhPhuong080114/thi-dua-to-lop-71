@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THI DUA LOP 71</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Arial'],
+                    },
+                    colors: {
+                        chalkGreen: '#1e3a29',
+                        chalkBoard: '#152b1e',
+                        chalkSoft: '#2d543c',
+                        pastelPaper: '#f4f7f4',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #1a3324;
+            color: #f0fdf4;
+        }
+        .chalk-bg {
+            background-image: 
+                radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 0),
+                linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 24px 24px, 40px 40px, 40px 40px;
+        }
+        .duck-lane {
+            transition: left 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        @keyframes waddle {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            25% { transform: translateY(-5px) rotate(-6deg); }
+            75% { transform: translateY(3px) rotate(6deg); }
+        }
+        .animate-waddle {
+            animation: waddle 0.7s infinite ease-in-out;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col chalk-bg">
+
+    <!-- Header Navigation -->
+    <header class="bg-chalkBoard border-b-2 border-emerald-800 shadow-lg sticky top-0 z-30">
+        <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-amber-400 text-slate-950 flex items-center justify-center text-2xl font-bold shadow">
+                    🦆
+                </div>
+                <div>
+                    <h1 class="text-xl sm:text-2xl font-bold text-amber-300 tracking-wide">ĐUA VỊT - THI ĐUA TỔ</h1>
+                    <p class="text-xs text-emerald-300 font-semibold hidden sm:block">Bảng Điểm Thi Đua Các Tổ Realtime (Bắt Đầu: 100 Bước)</p>
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-2">
+                <!-- Copy Link Button -->
+                <button id="shareBtn" class="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-emerald-900/80 text-emerald-200 hover:bg-emerald-800 border border-emerald-700 text-xs font-bold transition">
+                    <i class="fa-solid fa-share-nodes"></i>
+                    <span class="hidden sm:inline">Chia Sẻ Link</span>
+                </button>
+
+                <!-- Sync Badge -->
+                <div id="syncBadge" class="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-emerald-950/80 text-xs font-bold text-emerald-300 border border-emerald-800">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" id="syncDot"></span>
+                    <span id="syncText">Trực Tuyến</span>
+                </div>
+
+                <!-- Admin Button -->
+                <button id="adminToggleBtn" class="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold transition bg-amber-500 text-slate-950 hover:bg-amber-400 shadow">
+                    <i class="fa-solid fa-lock" id="adminLockIcon"></i>
+                    <span id="adminBtnText">Quản Trị Viên</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-1 max-w-6xl w-full mx-auto p-4 space-y-6">
+
+        <!-- Banner Info -->
+        <div class="bg-chalkSoft/80 rounded-2xl p-5 border border-emerald-700/60 shadow-md flex flex-wrap items-center justify-between gap-4">
+            <div>
+                <span class="bg-amber-400 text-slate-950 text-xs px-2.5 py-1 rounded font-bold uppercase tracking-wider inline-block mb-1">Thi Đua Học Đường</span>
+                <h2 class="text-2xl font-bold text-white">Vòng Đua Thi Đấu Trực Tiếp</h2>
+            </div>
+            <div class="bg-chalkBoard px-4 py-2.5 rounded-xl border border-emerald-800 text-center min-w-[140px]">
+                <div class="text-[11px] text-emerald-400 font-bold uppercase">Trạng Thái</div>
+                <div id="adminStatusTag" class="text-xs font-bold mt-0.5 text-amber-300">Chế Độ Người Xem</div>
+            </div>
+        </div>
+
+        <!-- Leaderboard Team Cards -->
+        <section class="grid grid-cols-2 md:grid-cols-4 gap-4" id="cardsGrid">
+            <!-- Dynamic Cards -->
+        </section>
+
+        <!-- Race Tracks -->
+        <section class="bg-chalkBoard rounded-2xl p-4 sm:p-6 shadow-xl border border-emerald-800 space-y-4">
+            <div class="flex items-center justify-between pb-3 border-b border-emerald-800/80">
+                <h3 class="text-lg font-bold text-amber-300 flex items-center gap-2">
+                    <i class="fa-solid fa-flag-checkered"></i> Đường Đua Thi Đua Các Tổ
+                </h3>
+            </div>
+
+            <!-- Tracks Container -->
+            <div class="space-y-4 overflow-x-auto py-2">
+                <div class="min-w-[650px] space-y-4" id="tracksContainer">
+                    <!-- Dynamic Tracks -->
+                </div>
+            </div>
+        </section>
+
+        <!-- History Log Section -->
+        <section class="bg-chalkBoard rounded-2xl p-4 sm:p-6 shadow-xl border border-emerald-800 space-y-3">
+            <div class="flex items-center justify-between border-b border-emerald-800/80 pb-3">
+                <h3 class="text-lg font-bold text-amber-300 flex items-center gap-2">
+                    <i class="fa-solid fa-clock-rotate-left"></i> Lịch Sử Cộng / Trừ Bước
+                </h3>
+                <!-- Nút xóa lịch sử chỉ hiện khi ở chế độ admin -->
+                <button id="clearHistoryBtn" class="hidden px-2.5 py-1 rounded-lg bg-rose-500/20 text-rose-300 hover:bg-rose-500/30 text-xs font-bold transition border border-rose-500/40">
+                    <i class="fa-solid fa-trash-can"></i> Xóa Lịch Sử
+                </button>
+            </div>
+            <div class="max-h-60 overflow-y-auto space-y-2 pr-2" id="historyContainer">
+                <!-- Dynamic History Logs -->
+                <p class="text-xs text-emerald-400 italic text-center py-2">Chưa có lịch sử thay đổi nào.</p>
+            </div>
+        </section>
+
+        <!-- Admin Control Panel -->
+        <section id="adminPanel" class="hidden bg-slate-900 rounded-2xl p-5 sm:p-6 text-white shadow-2xl space-y-6 border border-amber-500/30">
+            <div class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-800 pb-4">
+                <div>
+                    <h3 class="text-lg font-bold text-amber-400 flex items-center gap-2">
+                        <i class="fa-solid fa-sliders"></i> Bảng Điều Khiển Quản Trị
+                    </h3>
+                    <p class="text-xs text-slate-400 mt-0.5">Nhập số bước, kèm lý do rõ ràng trước khi cộng/trừ hoặc cập nhật tổng bước.</p>
+                </div>
+                <div class="flex flex-wrap items-center gap-2">
+                    <button id="changePinBtn" class="px-3 py-1.5 rounded-lg bg-amber-500/20 text-amber-300 hover:bg-amber-500/30 text-xs font-bold transition border border-amber-500/40">
+                        <i class="fa-solid fa-key"></i> Đổi Mật Mã Admin
+                    </button>
+                    <button id="resetAllBtn" class="px-3 py-1.5 rounded-lg bg-rose-500/20 text-rose-300 hover:bg-rose-500/30 text-xs font-bold transition border border-rose-500/40">
+                        <i class="fa-solid fa-rotate-left"></i> Đặt Lại 100 Bước
+                    </button>
+                    <button id="logoutAdminBtn" class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 text-xs font-bold transition border border-slate-700">
+                        Thoát Admin
+                    </button>
+                </div>
+            </div>
+
+            <!-- Team Control Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="adminControlsGrid">
+                <!-- Controls rendered via JS -->
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Modal Login Admin PIN -->
+    <div id="pinModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-chalkBoard rounded-2xl p-6 max-w-sm w-full shadow-2xl border border-emerald-700">
+            <div class="text-center space-y-2 mb-5">
+                <div class="w-12 h-12 rounded-xl bg-amber-400 text-slate-950 flex items-center justify-center text-xl mx-auto font-bold">
+                    <i class="fa-solid fa-lock"></i>
+                </div>
+                <h3 class="text-xl font-bold text-white">Mật Mã Quản Trị</h3>
+                <p class="text-xs text-emerald-300">Mật mã mặc định ban đầu: <span class="font-bold text-amber-300 bg-emerald-950 px-2 py-0.5 rounded border border-emerald-800">1234</span></p>
+            </div>
+
+            <form id="pinForm" class="space-y-4">
+                <div>
+                    <input type="password" id="pinInput" placeholder="Nhập mật mã..." maxlength="12" autofocus
+                        class="w-full text-center tracking-widest text-xl font-bold py-2.5 px-4 rounded-xl bg-chalkSoft text-white border border-emerald-600 focus:outline-none focus:ring-2 focus:ring-amber-400">
+                    <p id="pinError" class="text-xs text-rose-400 font-bold text-center mt-2 hidden">Mật mã không đúng hoặc có máy khác đang quản trị!</p>
+                </div>
+
+                <div class="flex gap-2">
+                    <button type="button" id="cancelPinBtn" class="flex-1 py-2.5 rounded-xl bg-emerald-900/60 text-emerald-200 font-bold hover:bg-emerald-800 transition text-xs border border-emerald-700">
+                        Hủy
+                    </button>
+                    <button type="submit" class="flex-1 py-2.5 rounded-xl bg-amber-400 text-slate-950 font-bold hover:bg-amber-300 transition shadow text-xs">
+                        Xác Nhận
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Change Passcode -->
+    <div id="changePinModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-chalkBoard rounded-2xl p-6 max-w-sm w-full shadow-2xl border border-amber-500/40">
+            <div class="text-center space-y-1 mb-4">
+                <h3 class="text-lg font-bold text-amber-300">Đổi Mật Mã Admin</h3>
+                <p class="text-xs text-emerald-300">Mật mã mới sẽ có hiệu lực ngay lập tức.</p>
+            </div>
+
+            <form id="changePinForm" class="space-y-3">
+                <div>
+                    <label class="block text-xs font-bold text-emerald-200 mb-1">Mật mã hiện tại</label>
+                    <input type="password" id="oldPinInput" placeholder="Nhập mật mã cũ..." required
+                        class="w-full text-center font-bold py-2 px-3 text-sm rounded-lg bg-chalkSoft text-white border border-emerald-600 focus:outline-none focus:ring-2 focus:ring-amber-400">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-emerald-200 mb-1">Mật mã mới</label>
+                    <input type="password" id="newPinInput" placeholder="Mật mã mới (tối thiểu 4 ký tự)..." minlength="4" required
+                        class="w-full text-center font-bold py-2 px-3 text-sm rounded-lg bg-chalkSoft text-white border border-emerald-600 focus:outline-none focus:ring-2 focus:ring-amber-400">
+                </div>
+
+                <p id="changePinError" class="text-xs text-rose-400 font-bold text-center hidden"></p>
+
+                <div class="flex gap-2 pt-2">
+                    <button type="button" id="cancelChangePinBtn" class="flex-1 py-2 rounded-lg bg-emerald-900/60 text-emerald-200 font-bold hover:bg-emerald-800 transition text-xs border border-emerald-700">
+                        Hủy
+                    </button>
+                    <button type="submit" class="flex-1 py-2 rounded-lg bg-amber-400 text-slate-950 font-bold hover:bg-amber-300 transition text-xs">
+                        Cập Nhật
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toastContainer" class="fixed bottom-4 right-4 z-50 space-y-2 pointer-events-none"></div>
+
+    <!-- Application Script -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'duck-race-school-app';
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
+            apiKey: "dummy-key",
+            authDomain: "dummy.firebaseapp.com",
+            projectId: "dummy-project",
+            storageBucket: "dummy.appspot.com",
+            messagingSenderId: "123456789",
+            appId: "1:123456789:web:123456"
+        };
+
+        const DEFAULT_TEAMS = [
+            { id: 1, label: "Tổ 1", color: "#FBC02D", bgClass: "bg-amber-400", textClass: "text-amber-400", borderClass: "border-amber-400", steps: 100, icon: "🦆" },
+            { id: 2, label: "Tổ 2", color: "#EC4899", bgClass: "bg-pink-500", textClass: "text-pink-400", borderClass: "border-pink-500", steps: 100, icon: "🐥" },
+            { id: 3, label: "Tổ 3", color: "#38BDF8", bgClass: "bg-sky-400", textClass: "text-sky-400", borderClass: "border-sky-400", steps: 100, icon: "🦢" },
+            { id: 4, label: "Tổ 4", color: "#C084FC", bgClass: "bg-purple-400", textClass: "text-purple-400", borderClass: "border-purple-400", steps: 100, icon: "🦩" },
+        ];
+
+        let state = {
+            teams: JSON.parse(JSON.stringify(DEFAULT_TEAMS)),
+            history: [],
+            adminPin: "1234",
+            activeAdminSessionId: null,
+            mySessionId: Math.random().toString(36).substring(2, 9),
+            isAdmin: false,
+            user: null,
+            maxStepsTrack: 250
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        const raceDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'race', 'currentRace');
+        const LOCAL_STORAGE_KEY = 'DUCK_RACE_LOCAL_STATE_WITH_HISTORY';
+
+        function loadLocalState() {
+            try {
+                const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    if (parsed.teams) state.teams = parsed.teams;
+                    if (parsed.history) state.history = parsed.history;
+                    if (parsed.adminPin) state.adminPin = parsed.adminPin;
+                }
+            } catch (e) {}
+        }
+
+        function saveLocalState() {
+            try {
+                localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify({
+                    teams: state.teams,
+                    history: state.history,
+                    adminPin: state.adminPin
+                }));
+            } catch (e) {}
+        }
+
+        async function initAuth() {
+            try {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+            } catch (err) {
+                loadLocalState();
+                render();
+            }
+        }
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                state.user = user;
+                subscribeToRaceState();
+            } else {
+                loadLocalState();
+                render();
+            }
+        });
+
+        function subscribeToRaceState() {
+            onSnapshot(raceDocRef, (docSnap) => {
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    if (data) {
+                        if (Array.isArray(data.teams)) state.teams = data.teams;
+                        if (Array.isArray(data.history)) state.history = data.history;
+                        if (data.adminPin) state.adminPin = data.adminPin;
+                        
+                        state.activeAdminSessionId = data.activeAdminSessionId || null;
+                        if (state.isAdmin && state.activeAdminSessionId && state.activeAdminSessionId !== state.mySessionId) {
+                            state.isAdmin = false;
+                            updateAdminBtnUI();
+                            showToast("Máy khác vừa đăng nhập Quản Trị Viên!", "error");
+                        }
+
+                        saveLocalState();
+                        render();
+                    }
+                } else {
+                    saveRaceState(DEFAULT_TEAMS, [], "1234", null);
+                }
+            }, (error) => {
+                loadLocalState();
+                render();
+            });
+        }
+
+        async function saveRaceState(teamsData = state.teams, historyData = state.history, pin = state.adminPin, adminSession = state.activeAdminSessionId) {
+            state.teams = teamsData;
+            state.history = historyData;
+            state.adminPin = pin;
+            saveLocalState();
+            render();
+
+            if (!state.user) return;
+            try {
+                await setDoc(raceDocRef, {
+                    teams: teamsData,
+                    history: historyData,
+                    adminPin: pin,
+                    activeAdminSessionId: adminSession,
+                    updatedAt: new Date().toISOString()
+                }, { merge: true });
+            } catch (err) {}
+        }
+
+        window.addStepsByInput = function(teamId, isSubtract = false) {
+            if (!state.isAdmin) return;
+            const input = document.getElementById(`deltaInput-${teamId}`);
+            const reasonInput = document.getElementById(`reasonInput-${teamId}`);
+            
+            let val = parseInt(input.value, 10);
+            if (isNaN(val) || val === 0) {
+                showToast("Vui lòng nhập số bước hợp lệ!", "error");
+                return;
+            }
+
+            if (isSubtract) val = -Math.abs(val);
+            let reason = reasonInput.value.trim() || (isSubtract ? "Trừ điểm thi đua" : "Cộng điểm thi đua");
+
+            const targetTeam = state.teams.find(t => t.id === teamId);
+            if (!targetTeam) return;
+
+            const oldSteps = targetTeam.steps;
+            const newSteps = Math.max(0, oldSteps + val);
+
+            const updatedTeams = state.teams.map(team => {
+                if (team.id === teamId) {
+                    return { ...team, steps: newSteps };
+                }
+                return team;
+            });
+
+            const timeStr = new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            const historyItem = {
+                id: Math.random().toString(36).substring(2, 9),
+                time: timeStr,
+                teamLabel: targetTeam.label,
+                teamIcon: targetTeam.icon,
+                delta: val,
+                reason: reason,
+                newTotal: newSteps
+            };
+
+            const updatedHistory = [historyItem, ...state.history].slice(0, 50);
+
+            saveRaceState(updatedTeams, updatedHistory, state.adminPin, state.mySessionId);
+            
+            input.value = '';
+            reasonInput.value = '';
+            showToast(`Đã ${val > 0 ? 'cộng' : 'trừ'} bước cho ${targetTeam.label}!`, "success");
+        };
+
+        window.setTotalStepsByInput = function(teamId) {
+            if (!state.isAdmin) return;
+            const input = document.getElementById(`totalInput-${teamId}`);
+            const reasonInput = document.getElementById(`reasonTotalInput-${teamId}`);
+            
+            const val = parseInt(input.value, 10);
+            if (isNaN(val)) {
+                showToast("Vui lòng nhập tổng số bước mới!", "error");
+                return;
+            }
+
+            const targetTeam = state.teams.find(t => t.id === teamId);
+            if (!targetTeam) return;
+
+            let reason = reasonInput.value.trim() || "Cập nhật lại tổng số bước";
+            const diff = val - targetTeam.steps;
+
+            const updatedTeams = state.teams.map(team => {
+                if (team.id === teamId) {
+                    return { ...team, steps: Math.max(0, val) };
+                }
+                return team;
+            });
+
+            const timeStr = new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            const historyItem = {
+                id: Math.random().toString(36).substring(2, 9),
+                time: timeStr,
+                teamLabel: targetTeam.label,
+                teamIcon: targetTeam.icon,
+                delta: diff,
+                reason: `[Cập nhật tổng] ${reason}`,
+                newTotal: Math.max(0, val)
+            };
+
+            const updatedHistory = [historyItem, ...state.history].slice(0, 50);
+
+            saveRaceState(updatedTeams, updatedHistory, state.adminPin, state.mySessionId);
+            input.value = '';
+            reasonInput.value = '';
+            showToast(`Đã cập nhật tổng bước cho ${targetTeam.label}!`, "success");
+        };
+
+        function render() {
+            const maxSteps = Math.max(...state.teams.map(t => t.steps), 100);
+            state.maxStepsTrack = Math.ceil((maxSteps + 30) / 10) * 10;
+
+            renderCards();
+            renderTracks();
+            renderHistory();
+            renderAdminPanel();
+        }
+
+        function renderCards() {
+            const container = document.getElementById('cardsGrid');
+            const sorted = [...state.teams].sort((a, b) => b.steps - a.steps);
+
+            container.innerHTML = state.teams.map(team => {
+                const rank = sorted.findIndex(t => t.id === team.id) + 1;
+                let rankBadge = `#${rank}`;
+                if (rank === 1) rankBadge = '🥇 Hạng 1';
+                else if (rank === 2) rankBadge = '🥈 Hạng 2';
+                else if (rank === 3) rankBadge = '🥉 Hạng 3';
+
+                return `
+                    <div class="bg-chalkBoard rounded-2xl p-4 border border-emerald-800 shadow-md flex flex-col justify-between">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-3xl">${team.icon}</span>
+                            <span class="text-xs font-bold px-2 py-0.5 rounded ${team.bgClass} text-slate-950">
+                                ${rankBadge}
+                            </span>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-white text-base">${team.label}</h4>
+                            <div class="flex items-baseline gap-1 mt-1">
+                                <span class="text-3xl font-bold ${team.textClass}">${team.steps}</span>
+                                <span class="text-xs text-emerald-400 font-bold">bước</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderTracks() {
+            const container = document.getElementById('tracksContainer');
+
+            container.innerHTML = state.teams.map(team => {
+                const percentage = Math.min(100, Math.max(0, (team.steps / state.maxStepsTrack) * 100));
+
+                return `
+                    <div class="space-y-1.5">
+                        <div class="flex items-center justify-between text-xs font-bold px-1">
+                            <span class="text-emerald-200 flex items-center gap-1.5">
+                                <span class="w-3 h-3 rounded-full inline-block" style="background-color: ${team.color}"></span>
+                                ${team.label} (${team.icon})
+                            </span>
+                            <span class="${team.textClass} font-mono text-sm">${team.steps} Bước</span>
+                        </div>
+
+                        <div class="relative h-14 bg-chalkSoft/60 rounded-xl border border-emerald-700/60 flex items-center px-4 overflow-hidden">
+                            <div class="duck-lane absolute top-1/2 -translate-y-1/2 flex items-center z-10" style="left: calc(${percentage}% - 22px);">
+                                <div class="text-3xl sm:text-4xl animate-waddle">
+                                    ${team.icon}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderHistory() {
+            const container = document.getElementById('historyContainer');
+            const clearBtn = document.getElementById('clearHistoryBtn');
+
+            if (state.isAdmin) {
+                clearBtn.classList.remove('hidden');
+            } else {
+                clearBtn.classList.add('hidden');
+            }
+
+            if (!state.history || state.history.length === 0) {
+                container.innerHTML = `<p class="text-xs text-emerald-400/80 italic text-center py-2">Chưa có lịch sử thay đổi nào.</p>`;
+                return;
+            }
+
+            container.innerHTML = state.history.map(item => {
+                const isPositive = item.delta >= 0;
+                const badgeColor = isPositive ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40' : 'bg-rose-500/20 text-rose-300 border-rose-500/40';
+                const sign = isPositive ? `+${item.delta}` : `${item.delta}`;
+
+                return `
+                    <div class="bg-chalkSoft/40 border border-emerald-800/60 rounded-xl p-3 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-xs">
+                        <div class="flex items-center space-x-2.5">
+                            <span class="text-emerald-400 font-mono text-[11px] bg-chalkBoard px-2 py-1 rounded border border-emerald-900">${item.time}</span>
+                            <span class="font-bold text-white flex items-center gap-1">${item.teamIcon} ${item.teamLabel}</span>
+                            <span class="px-2 py-0.5 rounded font-bold border ${badgeColor}">${sign} bước</span>
+                        </div>
+                        <div class="text-emerald-200 flex-1 sm:text-right">
+                            <span class="italic text-slate-300">Lý do:</span> <span class="font-semibold text-white">${item.reason}</span> 
+                            <span class="text-emerald-400 ml-2">(Tổng: <strong class="text-amber-300">${item.newTotal}</strong>)</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderAdminPanel() {
+            const panel = document.getElementById('adminPanel');
+            const grid = document.getElementById('adminControlsGrid');
+
+            if (!state.isAdmin) {
+                panel.classList.add('hidden');
+                return;
+            }
+
+            panel.classList.remove('hidden');
+            grid.innerHTML = state.teams.map(team => {
+                return `
+                    <div class="bg-slate-950 rounded-xl p-4 border border-slate-800 space-y-4">
+                        <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+                            <div class="flex items-center space-x-2">
+                                <span class="text-2xl">${team.icon}</span>
+                                <span class="font-bold text-white text-base">${team.label}</span>
+                            </div>
+                            <span class="text-lg font-bold ${team.textClass} bg-slate-900 px-3 py-0.5 rounded-lg border border-slate-800 font-mono">
+                                ${team.steps} bước
+                            </span>
+                        </div>
+
+                        <!-- Option 1: Add/Subtract with Reason -->
+                        <div class="space-y-2">
+                            <label class="text-[11px] font-bold text-amber-300 uppercase tracking-wider block">Cộng / Trừ Bước & Lý Do:</label>
+                            <div class="flex gap-2">
+                                <input type="number" id="deltaInput-${team.id}" placeholder="Số bước..." 
+                                    class="w-1/3 bg-slate-900 border border-slate-700 text-white text-xs rounded-lg px-3 py-2 focus:outline-none focus:border-amber-400">
+                                <input type="text" id="reasonInput-${team.id}" placeholder="Nhập lý do..." 
+                                    class="w-2/3 bg-slate-900 border border-slate-700 text-white text-xs rounded-lg px-3 py-2 focus:outline-none focus:border-amber-400">
+                            </div>
+                            <div class="flex gap-2 pt-1">
+                                <button onclick="addStepsByInput(${team.id}, false)" class="flex-1 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-bold transition">
+                                    <i class="fa-solid fa-plus"></i> Cộng Điểm
+                                </button>
+                                <button onclick="addStepsByInput(${team.id}, true)" class="flex-1 py-2 bg-rose-600 hover:bg-rose-500 text-white rounded-lg text-xs font-bold transition">
+                                    <i class="fa-solid fa-minus"></i> Trừ Điểm
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Option 2: Set Total Steps Directly -->
+                        <div class="space-y-2 pt-2 border-t border-slate-900">
+                            <label class="text-[11px] font-bold text-sky-300 uppercase tracking-wider block">Ghi Đè Tổng Số Bước:</label>
+                            <div class="flex gap-2">
+                                <input type="number" id="totalInput-${team.id}" placeholder="Tổng mới..." 
+                                    class="w-1/3 bg-slate-900 border border-slate-700 text-white text-xs rounded-lg px-3 py-2 focus:outline-none focus:border-sky-400">
+                                <input type="text" id="reasonTotalInput-${team.id}" placeholder="Lý do ghi đè..." 
+                                    class="w-2/3 bg-slate-900 border border-slate-700 text-white text-xs rounded-lg px-3 py-2 focus:outline-none focus:border-sky-400">
+                            </div>
+                            <button onclick="setTotalStepsByInput(${team.id})" class="w-full py-2 bg-sky-500 hover:bg-sky-400 text-slate-950 rounded-lg text-xs font-bold transition">
+                                Cập Nhật Tổng Bước
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        const adminToggleBtn = document.getElementById('adminToggleBtn');
+        const pinModal = document.getElementById('pinModal');
+        const pinForm = document.getElementById('pinForm');
+        const pinInput = document.getElementById('pinInput');
+        const pinError = document.getElementById('pinError');
+        const cancelPinBtn = document.getElementById('cancelPinBtn');
+
+        const changePinBtn = document.getElementById('changePinBtn');
+        const changePinModal = document.getElementById('changePinModal');
+        const changePinForm = document.getElementById('changePinForm');
+        const cancelChangePinBtn = document.getElementById('cancelChangePinBtn');
+
+        const logoutAdminBtn = document.getElementById('logoutAdminBtn');
+        const resetAllBtn = document.getElementById('resetAllBtn');
+        const clearHistoryBtn = document.getElementById('clearHistoryBtn');
+        const shareBtn = document.getElementById('shareBtn');
+
+        shareBtn.addEventListener('click', () => {
+            const url = window.location.href;
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(url).then(() => {
+                    showToast("Đã sao chép link bảng đua!", "success");
+                });
+            }
+        });
+
+        adminToggleBtn.addEventListener('click', () => {
+            if (state.isAdmin) {
+                document.getElementById('adminPanel').scrollIntoView({ behavior: 'smooth' });
+            } else {
+                pinModal.classList.remove('hidden');
+                pinInput.value = '';
+                pinError.classList.add('hidden');
+                pinInput.focus();
+            }
+        });
+
+        cancelPinBtn.addEventListener('click', () => pinModal.classList.add('hidden'));
+
+        pinForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            if (pinInput.value === state.adminPin) {
+                state.isAdmin = true;
+                state.activeAdminSessionId = state.mySessionId;
+                saveRaceState(state.teams, state.history, state.adminPin, state.mySessionId);
+                pinModal.classList.add('hidden');
+                updateAdminBtnUI();
+                renderAdminPanel();
+                showToast("Đăng nhập Admin thành công!", "success");
+            } else {
+                pinError.classList.remove('hidden');
+            }
+        });
+
+        changePinBtn.addEventListener('click', () => {
+            changePinModal.classList.remove('hidden');
+            document.getElementById('oldPinInput').value = '';
+            document.getElementById('newPinInput').value = '';
+            document.getElementById('changePinError').classList.add('hidden');
+        });
+
+        cancelChangePinBtn.addEventListener('click', () => changePinModal.classList.add('hidden'));
+
+        changePinForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const oldPin = document.getElementById('oldPinInput').value;
+            const newPin = document.getElementById('newPinInput').value;
+            const errEl = document.getElementById('changePinError');
+
+            if (oldPin !== state.adminPin) {
+                errEl.innerText = "Mật mã cũ không chính xác!";
+                errEl.classList.remove('hidden');
+                return;
+            }
+
+            if (newPin.length < 4) {
+                errEl.innerText = "Mật mã mới cần ít nhất 4 ký tự!";
+                errEl.classList.remove('hidden');
+                return;
+            }
+
+            state.adminPin = newPin;
+            saveRaceState(state.teams, state.history, newPin, state.mySessionId);
+            changePinModal.classList.add('hidden');
+            showToast("Đã cập nhật mật mã Admin mới!", "success");
+        });
+
+        logoutAdminBtn.addEventListener('click', () => {
+            state.isAdmin = false;
+            state.activeAdminSessionId = null;
+            saveRaceState(state.teams, state.history, state.adminPin, null);
+            updateAdminBtnUI();
+            renderAdminPanel();
+            showToast("Đã thoát quyền Quản trị viên.", "info");
+        });
+
+        resetAllBtn.addEventListener('click', () => {
+            if (!state.isAdmin) return;
+            const reset = state.teams.map(t => ({ ...t, steps: 100 }));
+            const resetHistory = [{
+                id: Math.random().toString(36).substring(2, 9),
+                time: new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
+                teamLabel: "Hệ thống",
+                teamIcon: "🔄",
+                delta: 0,
+                reason: "Đặt lại toàn bộ các tổ về 100 bước",
+                newTotal: 100
+            }, ...state.history];
+
+            saveRaceState(reset, resetHistory, state.adminPin, state.mySessionId);
+            showToast("Đã đặt lại 4 tổ về 100 bước!", "info");
+        });
+
+        // Tính năng xóa lịch sử cho Admin
+        clearHistoryBtn.addEventListener('click', () => {
+            if (!state.isAdmin) return;
+            if (confirm("Bạn có chắc chắn muốn xóa toàn bộ lịch sử điểm không?")) {
+                saveRaceState(state.teams, [], state.adminPin, state.mySessionId);
+                showToast("Đã xóa toàn bộ lịch sử!", "info");
+            }
+        });
+
+        function updateAdminBtnUI() {
+            const btn = document.getElementById('adminToggleBtn');
+            const icon = document.getElementById('adminLockIcon');
+            const text = document.getElementById('adminBtnText');
+            const tag = document.getElementById('adminStatusTag');
+
+            if (state.isAdmin) {
+                btn.className = "flex items-center space-x-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold transition bg-amber-400 text-slate-950 shadow";
+                icon.className = "fa-solid fa-unlock";
+                text.innerText = "Đã Đăng Nhập Admin";
+                tag.className = "text-xs font-bold mt-0.5 text-amber-300";
+                tag.innerText = "Quản Trị Viên (Hoạt Động)";
+            } else {
+                btn.className = "flex items-center space-x-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold transition bg-amber-500 text-slate-950 hover:bg-amber-400 shadow";
+                icon.className = "fa-solid fa-lock";
+                text.innerText = "Quản Trị Viên";
+                tag.className = "text-xs font-bold mt-0.5 text-emerald-300";
+                tag.innerText = "Chế Độ Người Xem";
+            }
+        }
+
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            
+            let bg = 'bg-slate-900 text-white border-slate-700';
+            if (type === 'success') bg = 'bg-emerald-800 text-white border-emerald-600';
+            if (type === 'error') bg = 'bg-rose-900 text-white border-rose-700';
+
+            toast.className = `${bg} text-xs font-bold px-4 py-2.5 rounded-xl shadow-2xl flex items-center gap-2 transform transition-all duration-300 translate-y-4 opacity-0 pointer-events-auto border`;
+            toast.innerHTML = `<span>${message}</span>`;
+            
+            container.appendChild(toast);
+
+            setTimeout(() => toast.classList.remove('translate-y-4', 'opacity-0'), 10);
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-4');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        initAuth();
+    </script>
+</body>
+</html>
