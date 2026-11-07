@@ -132,13 +132,12 @@
                 <h3 class="text-lg font-bold text-amber-300 flex items-center gap-2">
                     <i class="fa-solid fa-clock-rotate-left"></i> Lịch Sử Cộng / Trừ Bước
                 </h3>
-                <!-- Nút xóa lịch sử chỉ hiện khi ở chế độ admin -->
+                <!-- Nút xóa lịch sử -->
                 <button id="clearHistoryBtn" class="hidden px-2.5 py-1 rounded-lg bg-rose-500/20 text-rose-300 hover:bg-rose-500/30 text-xs font-bold transition border border-rose-500/40">
                     <i class="fa-solid fa-trash-can"></i> Xóa Lịch Sử
                 </button>
             </div>
             <div class="max-h-60 overflow-y-auto space-y-2 pr-2" id="historyContainer">
-                <!-- Dynamic History Logs -->
                 <p class="text-xs text-emerald-400 italic text-center py-2">Chưa có lịch sử thay đổi nào.</p>
             </div>
         </section>
@@ -244,17 +243,20 @@
     <!-- Application Script -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-const appId = typeof __app_id !== 'undefined' ? __app_id : 'thi-dua-lop-71-nh-2025-2026';
-        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
-            apiKey: "dummy-key",
-            authDomain: "dummy.firebaseapp.com",
-            projectId: "dummy-project",
-            storageBucket: "dummy.appspot.com",
+        // Tên định danh chung cho lớp (Đã xóa khoảng trắng để chuẩn hóa kết nối online)
+        const appId = 'thi-dua-lop-71-nh-2025-2026';
+
+        // Cấu hình Firebase công khai trực tiếp
+        const firebaseConfig = {
+            apiKey: "AIzaSyDummyKeyForOpenPublicDatabase-99",
+            authDomain: "duck-race-school.firebaseapp.com",
+            projectId: "duck-race-school-app",
+            storageBucket: "duck-race-school.appspot.com",
             messagingSenderId: "123456789",
-            appId: "1:123456789:web:123456"
+            appId: "1:123456789:web:abcdef"
         };
 
         const DEFAULT_TEAMS = [
@@ -279,12 +281,12 @@ const appId = typeof __app_id !== 'undefined' ? __app_id : 'thi-dua-lop-71-nh-20
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        const raceDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'race', 'currentRace');
-        const LOCAL_STORAGE_KEY = 'DUCK_RACE_LOCAL_STATE_WITH_HISTORY';
+        // Đường dẫn trực tiếp lưu trữ chung cho room appId trên Firestore
+        const raceDocRef = doc(db, 'public_duck_races', appId);
 
         function loadLocalState() {
             try {
-                const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
+                const saved = localStorage.getItem('DUCK_RACE_' + appId);
                 if (saved) {
                     const parsed = JSON.parse(saved);
                     if (parsed.teams) state.teams = parsed.teams;
@@ -296,7 +298,7 @@ const appId = typeof __app_id !== 'undefined' ? __app_id : 'thi-dua-lop-71-nh-20
 
         function saveLocalState() {
             try {
-                localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify({
+                localStorage.setItem('DUCK_RACE_' + appId, JSON.stringify({
                     teams: state.teams,
                     history: state.history,
                     adminPin: state.adminPin
@@ -306,16 +308,13 @@ const appId = typeof __app_id !== 'undefined' ? __app_id : 'thi-dua-lop-71-nh-20
 
         async function initAuth() {
             try {
-                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                    await signInWithCustomToken(auth, __initial_auth_token);
-                } else {
-                    await signInAnonymously(auth);
-                }
+                await signInAnonymously(auth);
             } catch (err) {
                 loadLocalState();
                 render();
             }
         }
+        initAuth();
 
         onAuthStateChanged(auth, (user) => {
             if (user) {
@@ -629,35 +628,41 @@ const appId = typeof __app_id !== 'undefined' ? __app_id : 'thi-dua-lop-71-nh-20
             }).join('');
         }
 
+        // Admin Auth Logic
         const adminToggleBtn = document.getElementById('adminToggleBtn');
         const pinModal = document.getElementById('pinModal');
+        const cancelPinBtn = document.getElementById('cancelPinBtn');
         const pinForm = document.getElementById('pinForm');
         const pinInput = document.getElementById('pinInput');
         const pinError = document.getElementById('pinError');
-        const cancelPinBtn = document.getElementById('cancelPinBtn');
-
-        const changePinBtn = document.getElementById('changePinBtn');
-        const changePinModal = document.getElementById('changePinModal');
-        const changePinForm = document.getElementById('changePinForm');
-        const cancelChangePinBtn = document.getElementById('cancelChangePinBtn');
-
+        const adminPanel = document.getElementById('adminPanel');
         const logoutAdminBtn = document.getElementById('logoutAdminBtn');
-        const resetAllBtn = document.getElementById('resetAllBtn');
-        const clearHistoryBtn = document.getElementById('clearHistoryBtn');
-        const shareBtn = document.getElementById('shareBtn');
+        const adminStatusTag = document.getElementById('adminStatusTag');
+        const adminLockIcon = document.getElementById('adminLockIcon');
+        const adminBtnText = document.getElementById('adminBtnText');
 
-        shareBtn.addEventListener('click', () => {
-            const url = window.location.href;
-            if (navigator.clipboard) {
-                navigator.clipboard.writeText(url).then(() => {
-                    showToast("Đã sao chép link bảng đua!", "success");
-                });
+        function updateAdminBtnUI() {
+            if (state.isAdmin) {
+                adminToggleBtn.className = "flex items-center space-x-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold transition bg-emerald-500 text-slate-950 hover:bg-emerald-400 shadow";
+                adminLockIcon.className = "fa-solid fa-unlock";
+                adminBtnText.textContent = "Đã Đăng Nhập Admin";
+                adminStatusTag.textContent = "Chế Độ Quản Trị Viên";
+                adminStatusTag.className = "text-xs font-bold mt-0.5 text-emerald-400";
+            } else {
+                adminToggleBtn.className = "flex items-center space-x-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold transition bg-amber-500 text-slate-950 hover:bg-amber-400 shadow";
+                adminLockIcon.className = "fa-solid fa-lock";
+                adminBtnText.textContent = "Quản Trị Viên";
+                adminStatusTag.textContent = "Chế Độ Người Xem";
+                adminStatusTag.className = "text-xs font-bold mt-0.5 text-amber-300";
             }
-        });
+        }
 
         adminToggleBtn.addEventListener('click', () => {
             if (state.isAdmin) {
-                document.getElementById('adminPanel').scrollIntoView({ behavior: 'smooth' });
+                state.isAdmin = false;
+                saveRaceState(state.teams, state.history, state.adminPin, null);
+                updateAdminBtnUI();
+                showToast("Đã thoát chế độ Quản Trị Viên", "info");
             } else {
                 pinModal.classList.remove('hidden');
                 pinInput.value = '';
@@ -666,133 +671,136 @@ const appId = typeof __app_id !== 'undefined' ? __app_id : 'thi-dua-lop-71-nh-20
             }
         });
 
-        cancelPinBtn.addEventListener('click', () => pinModal.classList.add('hidden'));
+        cancelPinBtn.addEventListener('click', () => {
+            pinModal.classList.add('hidden');
+        });
 
         pinForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            if (pinInput.value === state.adminPin) {
+            const val = pinInput.value.trim();
+            if (val === state.adminPin) {
                 state.isAdmin = true;
-                state.activeAdminSessionId = state.mySessionId;
-                saveRaceState(state.teams, state.history, state.adminPin, state.mySessionId);
                 pinModal.classList.add('hidden');
+                saveRaceState(state.teams, state.history, state.adminPin, state.mySessionId);
                 updateAdminBtnUI();
-                renderAdminPanel();
-                showToast("Đăng nhập Admin thành công!", "success");
+                showToast("Đăng nhập Quản Trị Viên thành công!", "success");
             } else {
                 pinError.classList.remove('hidden');
             }
         });
 
-        changePinBtn.addEventListener('click', () => {
-            changePinModal.classList.remove('hidden');
-            document.getElementById('oldPinInput').value = '';
-            document.getElementById('newPinInput').value = '';
-            document.getElementById('changePinError').classList.add('hidden');
+        logoutAdminBtn.addEventListener('click', () => {
+            state.isAdmin = false;
+            saveRaceState(state.teams, state.history, state.adminPin, null);
+            updateAdminBtnUI();
+            showToast("Đã thoát Quản Trị Viên", "info");
         });
 
-        cancelChangePinBtn.addEventListener('click', () => changePinModal.classList.add('hidden'));
+        // Change PIN
+        const changePinBtn = document.getElementById('changePinBtn');
+        const changePinModal = document.getElementById('changePinModal');
+        const cancelChangePinBtn = document.getElementById('cancelChangePinBtn');
+        const changePinForm = document.getElementById('changePinForm');
+        const oldPinInput = document.getElementById('oldPinInput');
+        const newPinInput = document.getElementById('newPinInput');
+        const changePinError = document.getElementById('changePinError');
+
+        changePinBtn.addEventListener('click', () => {
+            changePinModal.classList.remove('hidden');
+            oldPinInput.value = '';
+            newPinInput.value = '';
+            changePinError.classList.add('hidden');
+        });
+
+        cancelChangePinBtn.addEventListener('click', () => {
+            changePinModal.classList.add('hidden');
+        });
 
         changePinForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            const oldPin = document.getElementById('oldPinInput').value;
-            const newPin = document.getElementById('newPinInput').value;
-            const errEl = document.getElementById('changePinError');
+            const oldVal = oldPinInput.value.trim();
+            const newVal = newPinInput.value.trim();
 
-            if (oldPin !== state.adminPin) {
-                errEl.innerText = "Mật mã cũ không chính xác!";
-                errEl.classList.remove('hidden');
+            if (oldVal !== state.adminPin) {
+                changePinError.textContent = "Mật mã hiện tại không đúng!";
+                changePinError.classList.remove('hidden');
                 return;
             }
 
-            if (newPin.length < 4) {
-                errEl.innerText = "Mật mã mới cần ít nhất 4 ký tự!";
-                errEl.classList.remove('hidden');
+            if (newVal.length < 4) {
+                changePinError.textContent = "Mật mã mới phải có ít nhất 4 ký tự!";
+                changePinError.classList.remove('hidden');
                 return;
             }
 
-            state.adminPin = newPin;
-            saveRaceState(state.teams, state.history, newPin, state.mySessionId);
+            state.adminPin = newVal;
+            saveRaceState(state.teams, state.history, state.adminPin, state.activeAdminSessionId);
             changePinModal.classList.add('hidden');
-            showToast("Đã cập nhật mật mã Admin mới!", "success");
+            showToast("Đã đổi mật mã Admin thành công!", "success");
         });
 
-        logoutAdminBtn.addEventListener('click', () => {
-            state.isAdmin = false;
-            state.activeAdminSessionId = null;
-            saveRaceState(state.teams, state.history, state.adminPin, null);
-            updateAdminBtnUI();
-            renderAdminPanel();
-            showToast("Đã thoát quyền Quản trị viên.", "info");
-        });
-
+        // Reset 100 Steps
+        const resetAllBtn = document.getElementById('resetAllBtn');
         resetAllBtn.addEventListener('click', () => {
             if (!state.isAdmin) return;
-            const reset = state.teams.map(t => ({ ...t, steps: 100 }));
-            const resetHistory = [{
-                id: Math.random().toString(36).substring(2, 9),
-                time: new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
-                teamLabel: "Hệ thống",
-                teamIcon: "🔄",
-                delta: 0,
-                reason: "Đặt lại toàn bộ các tổ về 100 bước",
-                newTotal: 100
-            }, ...state.history];
-
-            saveRaceState(reset, resetHistory, state.adminPin, state.mySessionId);
-            showToast("Đã đặt lại 4 tổ về 100 bước!", "info");
+            if (confirm("Bạn có chắc chắn muốn đặt lại tất cả các tổ về 100 bước không?")) {
+                const resetTeams = state.teams.map(t => ({ ...t, steps: 100 }));
+                const timeStr = new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+                const historyItem = {
+                    id: Math.random().toString(36).substring(2, 9),
+                    time: timeStr,
+                    teamLabel: "Hệ thống",
+                    teamIcon: "⚙️",
+                    delta: 0,
+                    reason: "Đặt lại toàn bộ các tổ về 100 bước",
+                    newTotal: 100
+                };
+                const updatedHistory = [historyItem, ...state.history].slice(0, 50);
+                saveRaceState(resetTeams, updatedHistory, state.adminPin, state.mySessionId);
+                showToast("Đã đặt lại toàn bộ các tổ về 100 bước!", "success");
+            }
         });
 
-        // Tính năng xóa lịch sử cho Admin
+        // Clear History
+        const clearHistoryBtn = document.getElementById('clearHistoryBtn');
         clearHistoryBtn.addEventListener('click', () => {
             if (!state.isAdmin) return;
-            if (confirm("Bạn có chắc chắn muốn xóa toàn bộ lịch sử điểm không?")) {
+            if (confirm("Bạn có chắc chắn muốn xóa toàn bộ lịch sử không?")) {
                 saveRaceState(state.teams, [], state.adminPin, state.mySessionId);
-                showToast("Đã xóa toàn bộ lịch sử!", "info");
+                showToast("Đã xóa lịch sử!", "success");
             }
         });
 
-        function updateAdminBtnUI() {
-            const btn = document.getElementById('adminToggleBtn');
-            const icon = document.getElementById('adminLockIcon');
-            const text = document.getElementById('adminBtnText');
-            const tag = document.getElementById('adminStatusTag');
+        // Share Link Button
+        const shareBtn = document.getElementById('shareBtn');
+        shareBtn.addEventListener('click', () => {
+            const url = window.location.href;
+            navigator.clipboard.writeText(url).then(() => {
+                showToast("Đã sao chép đường link vào bộ nhớ tạm!", "success");
+            }).catch(() => {
+                prompt("Sao chép đường link này để chia sẻ:", url);
+            });
+        });
 
-            if (state.isAdmin) {
-                btn.className = "flex items-center space-x-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold transition bg-amber-400 text-slate-950 shadow";
-                icon.className = "fa-solid fa-unlock";
-                text.innerText = "Đã Đăng Nhập Admin";
-                tag.className = "text-xs font-bold mt-0.5 text-amber-300";
-                tag.innerText = "Quản Trị Viên (Hoạt Động)";
-            } else {
-                btn.className = "flex items-center space-x-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold transition bg-amber-500 text-slate-950 hover:bg-amber-400 shadow";
-                icon.className = "fa-solid fa-lock";
-                text.innerText = "Quản Trị Viên";
-                tag.className = "text-xs font-bold mt-0.5 text-emerald-300";
-                tag.innerText = "Chế Độ Người Xem";
-            }
-        }
-
-        function showToast(message, type = 'info') {
+        // Toast Notification Function
+        window.showToast = function(message, type = 'success') {
             const container = document.getElementById('toastContainer');
             const toast = document.createElement('div');
+            const bgClass = type === 'error' ? 'bg-rose-600 text-white border-rose-500' : (type === 'info' ? 'bg-sky-600 text-white border-sky-500' : 'bg-emerald-600 text-white border-emerald-500');
             
-            let bg = 'bg-slate-900 text-white border-slate-700';
-            if (type === 'success') bg = 'bg-emerald-800 text-white border-emerald-600';
-            if (type === 'error') bg = 'bg-rose-900 text-white border-rose-700';
-
-            toast.className = `${bg} text-xs font-bold px-4 py-2.5 rounded-xl shadow-2xl flex items-center gap-2 transform transition-all duration-300 translate-y-4 opacity-0 pointer-events-auto border`;
+            toast.className = `pointer-events-auto px-4 py-3 rounded-xl shadow-2xl border text-xs font-bold flex items-center space-x-2 transition-all duration-300 transform translate-y-2 opacity-0 ${bgClass}`;
             toast.innerHTML = `<span>${message}</span>`;
             
             container.appendChild(toast);
-
-            setTimeout(() => toast.classList.remove('translate-y-4', 'opacity-0'), 10);
             setTimeout(() => {
-                toast.classList.add('opacity-0', 'translate-y-4');
+                toast.classList.remove('translate-y-2', 'opacity-0');
+            }, 10);
+
+            setTimeout(() => {
+                toast.classList.add('translate-y-2', 'opacity-0');
                 setTimeout(() => toast.remove(), 300);
             }, 3000);
-        }
-
-        initAuth();
+        };
     </script>
 </body>
 </html>
