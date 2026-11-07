@@ -249,18 +249,16 @@
         // Tên định danh chung cho lớp (Đã xóa khoảng trắng để chuẩn hóa kết nối online)
         const appId = 'thi-dua-lop-71-nh-2025-2026';
 
-        const firebaseConfig = {
-            
-        const firebaseConfig = {
-            apiKey: "AIzaSyCQF4C0DcSce_bNDOBhj6KbsjFnrCJjRXI",
-            authDomain: "planning-with-ai-3f2fe.firebaseapp.com",
-            projectId: "planning-with-ai-3f2fe",
-            storageBucket: "planning-with-ai-3f2fe.firebasestorage.app",
-            messagingSenderId: "384461302475",
-            appId: "1:384461302475:web:c2db4957b0678f0299894e"
-        };
-
-
+        // Cấu hình Firebase công khai trực tiếp
+        
+const firebaseConfig = {
+  apiKey: "AIzaSyCQF4C0DcSce_bNDOBhj6KbsjFnrCJjRXI",
+  authDomain: "planning-with-ai-3f2fe.firebaseapp.com",
+  projectId: "planning-with-ai-3f2fe",
+  storageBucket: "planning-with-ai-3f2fe.firebasestorage.app",
+  messagingSenderId: "384461302475",
+  appId: "1:384461302475:web:c2db4957b0678f0299894e"
+};
         const DEFAULT_TEAMS = [
             { id: 1, label: "Tổ 1", color: "#FBC02D", bgClass: "bg-amber-400", textClass: "text-amber-400", borderClass: "border-amber-400", steps: 100, icon: "🦆" },
             { id: 2, label: "Tổ 2", color: "#EC4899", bgClass: "bg-pink-500", textClass: "text-pink-400", borderClass: "border-pink-500", steps: 100, icon: "🐥" },
