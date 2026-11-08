@@ -60,10 +60,10 @@
         <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
             <div class="flex items-center space-x-3">
                 <div class="w-10 h-10 rounded-xl bg-amber-400 text-slate-950 flex items-center justify-center text-2xl font-bold shadow">
-                    🦆
+                    ðŸ¦†
                 </div>
                 <div>
-                    <h1 class="text-xl sm:text-2xl font-bold text-amber-300 tracking-wide">ĐUA VỊT - THI ĐUA TỔ</h1>
+                    <h1 class="text-xl sm:text-2xl font-bold text-amber-300 tracking-wide">ÄUA Vá»ŠT - THI ÄUA Tá»”</h1>
                   
                 </div>
             </div>
@@ -72,19 +72,19 @@
                 <!-- Copy Link Button -->
                 <button id="shareBtn" class="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-emerald-900/80 text-emerald-200 hover:bg-emerald-800 border border-emerald-700 text-xs font-bold transition">
                     <i class="fa-solid fa-share-nodes"></i>
-                    <span class="hidden sm:inline">Chia Sẻ Link</span>
+                    <span class="hidden sm:inline">Chia Sáº» Link</span>
                 </button>
 
                 <!-- Sync Badge -->
                 <div id="syncBadge" class="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-emerald-950/80 text-xs font-bold text-emerald-300 border border-emerald-800">
                     <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" id="syncDot"></span>
-                    <span id="syncText">Trực Tuyến</span>
+                    <span id="syncText">Trá»±c Tuyáº¿n</span>
                 </div>
 
                 <!-- Admin Button -->
                 <button id="adminToggleBtn" class="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold transition bg-amber-500 text-slate-950 hover:bg-amber-400 shadow">
                     <i class="fa-solid fa-lock" id="adminLockIcon"></i>
-                    <span id="adminBtnText"> Đăng Nhập Quản Trị Viên</span>
+                    <span id="adminBtnText"> ÄÄƒng Nháº­p Quáº£n Trá»‹ ViÃªn</span>
                 </button>
             </div>
         </div>
@@ -96,12 +96,12 @@
         <!-- Banner Info -->
         <div class="bg-chalkSoft/80 rounded-2xl p-5 border border-emerald-700/60 shadow-md flex flex-wrap items-center justify-between gap-4">
             <div>
-                <span class="bg-amber-400 text-slate-950 text-xs px-2.5 py-1 rounded font-bold uppercase tracking-wider inline-block mb-1">Điểm Thi Đua Lớp 7/1</span>
-                <h2 class="text-2xl font-bold text-white">Điểm Cộng/Trừ các tổ</h2>
+                <span class="bg-amber-400 text-slate-950 text-xs px-2.5 py-1 rounded font-bold uppercase tracking-wider inline-block mb-1">Äiá»ƒm Thi Äua Lá»›p 7/1</span>
+                <h2 class="text-2xl font-bold text-white">Äiá»ƒm Cá»™ng/Trá»« cÃ¡c tá»•</h2>
             </div>
             <div class="bg-chalkBoard px-4 py-2.5 rounded-xl border border-emerald-800 text-center min-w-[140px]">
-                <div class="text-[11px] text-emerald-400 font-bold uppercase">Trạng Thái</div>
-                <div id="adminStatusTag" class="text-xs font-bold mt-0.5 text-amber-300">Chế Độ Người Xem</div>
+                <div class="text-[11px] text-emerald-400 font-bold uppercase">Tráº¡ng ThÃ¡i</div>
+                <div id="adminStatusTag" class="text-xs font-bold mt-0.5 text-amber-300">Cháº¿ Äá»™ NgÆ°á»i Xem</div>
             </div>
         </div>
 
@@ -114,7 +114,7 @@
         <section class="bg-chalkBoard rounded-2xl p-4 sm:p-6 shadow-xl border border-emerald-800 space-y-4">
             <div class="flex items-center justify-between pb-3 border-b border-emerald-800/80">
                 <h3 class="text-lg font-bold text-amber-300 flex items-center gap-2">
-                    <i class="fa-solid fa-flag-checkered"></i> Đường Đua Thi Đua Các Tổ
+                    <i class="fa-solid fa-flag-checkered"></i> ÄÆ°á»ng Äua Thi Äua CÃ¡c Tá»•
                 </h3>
             </div>
 
@@ -130,15 +130,28 @@
         <section class="bg-chalkBoard rounded-2xl p-4 sm:p-6 shadow-xl border border-emerald-800 space-y-3">
             <div class="flex items-center justify-between border-b border-emerald-800/80 pb-3">
                 <h3 class="text-lg font-bold text-amber-300 flex items-center gap-2">
-                    <i class="fa-solid fa-clock-rotate-left"></i> Lịch Sử Cộng / Trừ Bước
+                    <i class="fa-solid fa-clock-rotate-left"></i> Lá»‹ch Sá»­ Cá»™ng / Trá»« BÆ°á»›c
                 </h3>
-                <!-- Nút xóa lịch sử -->
+                <!-- NÃºt xÃ³a lá»‹ch sá»­ -->
                 <button id="clearHistoryBtn" class="hidden px-2.5 py-1 rounded-lg bg-rose-500/20 text-rose-300 hover:bg-rose-500/30 text-xs font-bold transition border border-rose-500/40">
-                    <i class="fa-solid fa-trash-can"></i> Xóa Lịch Sử
+                    <i class="fa-solid fa-trash-can"></i> XÃ³a Lá»‹ch Sá»­
                 </button>
             </div>
             <div class="max-h-60 overflow-y-auto space-y-2 pr-2" id="historyContainer">
-                <p class="text-xs text-emerald-400 italic text-center py-2">Chưa có lịch sử thay đổi nào.</p>
+                <p class="text-xs text-emerald-400 italic text-center py-2">ChÆ°a cÃ³ lá»‹ch sá»­ thay Ä‘á»•i nÃ o.</p>
+            </div>
+        </section>
+
+        <!-- Admin Announcements / Messages -->
+        <section class="bg-chalkBoard rounded-2xl p-4 sm:p-6 shadow-xl border border-emerald-800 space-y-3">
+            <div class="flex items-center justify-between border-b border-emerald-800/80 pb-3">
+                <h3 class="text-lg font-bold text-amber-300 flex items-center gap-2">
+                    <i class="fa-solid fa-bullhorn"></i> ThÃ´ng BÃ¡o / Tin Nháº¯n
+                </h3>
+                <span class="text-[11px] text-emerald-400 font-semibold">Quáº£n trá»‹ viÃªn Ä‘Äƒng Â· Má»i ngÆ°á»i xem</span>
+            </div>
+            <div class="max-h-80 overflow-y-auto space-y-2 pr-2" id="announcementsContainer">
+                <p class="text-xs text-emerald-400 italic text-center py-2">ChÆ°a cÃ³ thÃ´ng bÃ¡o nÃ o.</p>
             </div>
         </section>
 
@@ -147,19 +160,38 @@
             <div class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-800 pb-4">
                 <div>
                     <h3 class="text-lg font-bold text-amber-400 flex items-center gap-2">
-                        <i class="fa-solid fa-sliders"></i> Bảng Điều Khiển Quản Trị
+                        <i class="fa-solid fa-sliders"></i> Báº£ng Äiá»u Khiá»ƒn Quáº£n Trá»‹
                     </h3>
-                    <p class="text-xs text-slate-400 mt-0.5">Nhập số bước, kèm lý do rõ ràng trước khi cộng/trừ hoặc cập nhật tổng bước.</p>
+                    <p class="text-xs text-slate-400 mt-0.5">Nháº­p sá»‘ bÆ°á»›c, kÃ¨m lÃ½ do rÃµ rÃ ng trÆ°á»›c khi cá»™ng/trá»« hoáº·c cáº­p nháº­t tá»•ng bÆ°á»›c.</p>
                 </div>
                 <div class="flex flex-wrap items-center gap-2">
                     <button id="changePinBtn" class="px-3 py-1.5 rounded-lg bg-amber-500/20 text-amber-300 hover:bg-amber-500/30 text-xs font-bold transition border border-amber-500/40">
-                        <i class="fa-solid fa-key"></i> Đổi Mật Mã Admin
+                        <i class="fa-solid fa-key"></i> Äá»•i Máº­t MÃ£ Admin
                     </button>
                     <button id="resetAllBtn" class="px-3 py-1.5 rounded-lg bg-rose-500/20 text-rose-300 hover:bg-rose-500/30 text-xs font-bold transition border border-rose-500/40">
-                        <i class="fa-solid fa-rotate-left"></i> Đặt Lại 100 Bước
+                        <i class="fa-solid fa-rotate-left"></i> Äáº·t Láº¡i 100 BÆ°á»›c
                     </button>
                     <button id="logoutAdminBtn" class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 text-xs font-bold transition border border-slate-700">
-                        Thoát Admin
+                        ThoÃ¡t Admin
+                    </button>
+                </div>
+            </div>
+
+            <!-- Admin-only announcement composer -->
+            <div class="bg-slate-950 rounded-xl p-4 border border-amber-500/30 space-y-3">
+                <div>
+                    <h4 class="text-sm font-bold text-amber-300 flex items-center gap-2">
+                        <i class="fa-solid fa-paper-plane"></i> Gá»­i ThÃ´ng BÃ¡o / Tin Nháº¯n
+                    </h4>
+                    <p class="text-[11px] text-slate-400 mt-1">Chá»‰ quáº£n trá»‹ viÃªn Ä‘Æ°á»£c Ä‘Äƒng vÃ  xÃ³a. NgÆ°á»i xem chá»‰ cÃ³ thá»ƒ Ä‘á»c.</p>
+                </div>
+                <input type="text" id="announcementTitleInput" maxlength="100" placeholder="TiÃªu Ä‘á» (khÃ´ng báº¯t buá»™c)"
+                    class="w-full bg-slate-900 border border-slate-700 text-white text-xs rounded-lg px-3 py-2 focus:outline-none focus:border-amber-400">
+                <textarea id="announcementMessageInput" maxlength="2000" rows="3" placeholder="Nháº­p ná»™i dung thÃ´ng bÃ¡o / tin nháº¯n..."
+                    class="w-full bg-slate-900 border border-slate-700 text-white text-xs rounded-lg px-3 py-2 focus:outline-none focus:border-amber-400 resize-y"></textarea>
+                <div class="flex justify-end">
+                    <button type="button" id="publishAnnouncementBtn" class="px-4 py-2 bg-amber-400 hover:bg-amber-300 text-slate-950 rounded-lg text-xs font-bold transition">
+                        <i class="fa-solid fa-paper-plane"></i> ÄÄƒng ThÃ´ng BÃ¡o
                     </button>
                 </div>
             </div>
@@ -179,22 +211,22 @@
                 <div class="w-12 h-12 rounded-xl bg-amber-400 text-slate-950 flex items-center justify-center text-xl mx-auto font-bold">
                     <i class="fa-solid fa-lock"></i>
                 </div>
-                <h3 class="text-xl font-bold text-white">Mật Mã Quản Trị</h3>
+                <h3 class="text-xl font-bold text-white">Máº­t MÃ£ Quáº£n Trá»‹</h3>
                       </div>
 
             <form id="pinForm" class="space-y-4">
                 <div>
-                    <input type="password" id="pinInput" placeholder="Nhập mật mã..." maxlength="12" autofocus
+                    <input type="password" id="pinInput" placeholder="Nháº­p máº­t mÃ£..." maxlength="12" autofocus
                         class="w-full text-center tracking-widest text-xl font-bold py-2.5 px-4 rounded-xl bg-chalkSoft text-white border border-emerald-600 focus:outline-none focus:ring-2 focus:ring-amber-400">
-                    <p id="pinError" class="text-xs text-rose-400 font-bold text-center mt-2 hidden">Mật mã không đúng hoặc có máy khác đang quản trị!</p>
+                    <p id="pinError" class="text-xs text-rose-400 font-bold text-center mt-2 hidden">Máº­t mÃ£ khÃ´ng Ä‘Ãºng hoáº·c cÃ³ mÃ¡y khÃ¡c Ä‘ang quáº£n trá»‹!</p>
                 </div>
 
                 <div class="flex gap-2">
                     <button type="button" id="cancelPinBtn" class="flex-1 py-2.5 rounded-xl bg-emerald-900/60 text-emerald-200 font-bold hover:bg-emerald-800 transition text-xs border border-emerald-700">
-                        Hủy
+                        Há»§y
                     </button>
                     <button type="submit" class="flex-1 py-2.5 rounded-xl bg-amber-400 text-slate-950 font-bold hover:bg-amber-300 transition shadow text-xs">
-                        Xác Nhận
+                        XÃ¡c Nháº­n
                     </button>
                 </div>
             </form>
@@ -205,20 +237,20 @@
     <div id="changePinModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
         <div class="bg-chalkBoard rounded-2xl p-6 max-w-sm w-full shadow-2xl border border-amber-500/40">
             <div class="text-center space-y-1 mb-4">
-                <h3 class="text-lg font-bold text-amber-300">Đổi Mật Mã Admin</h3>
-                <p class="text-xs text-emerald-300">Mật mã mới sẽ có hiệu lực ngay lập tức.</p>
+                <h3 class="text-lg font-bold text-amber-300">Äá»•i Máº­t MÃ£ Admin</h3>
+                <p class="text-xs text-emerald-300">Máº­t mÃ£ má»›i sáº½ cÃ³ hiá»‡u lá»±c ngay láº­p tá»©c.</p>
             </div>
 
             <form id="changePinForm" class="space-y-3">
                 <div>
-                    <label class="block text-xs font-bold text-emerald-200 mb-1">Mật mã hiện tại</label>
-                    <input type="password" id="oldPinInput" placeholder="Nhập mật mã cũ..." required
+                    <label class="block text-xs font-bold text-emerald-200 mb-1">Máº­t mÃ£ hiá»‡n táº¡i</label>
+                    <input type="password" id="oldPinInput" placeholder="Nháº­p máº­t mÃ£ cÅ©..." required
                         class="w-full text-center font-bold py-2 px-3 text-sm rounded-lg bg-chalkSoft text-white border border-emerald-600 focus:outline-none focus:ring-2 focus:ring-amber-400">
                 </div>
 
                 <div>
-                    <label class="block text-xs font-bold text-emerald-200 mb-1">Mật mã mới</label>
-                    <input type="password" id="newPinInput" placeholder="Mật mã mới (tối thiểu 4 ký tự)..." minlength="4" required
+                    <label class="block text-xs font-bold text-emerald-200 mb-1">Máº­t mÃ£ má»›i</label>
+                    <input type="password" id="newPinInput" placeholder="Máº­t mÃ£ má»›i (tá»‘i thiá»ƒu 4 kÃ½ tá»±)..." minlength="4" required
                         class="w-full text-center font-bold py-2 px-3 text-sm rounded-lg bg-chalkSoft text-white border border-emerald-600 focus:outline-none focus:ring-2 focus:ring-amber-400">
                 </div>
 
@@ -226,10 +258,10 @@
 
                 <div class="flex gap-2 pt-2">
                     <button type="button" id="cancelChangePinBtn" class="flex-1 py-2 rounded-lg bg-emerald-900/60 text-emerald-200 font-bold hover:bg-emerald-800 transition text-xs border border-emerald-700">
-                        Hủy
+                        Há»§y
                     </button>
                     <button type="submit" class="flex-1 py-2 rounded-lg bg-amber-400 text-slate-950 font-bold hover:bg-amber-300 transition text-xs">
-                        Cập Nhật
+                        Cáº­p Nháº­t
                     </button>
                 </div>
             </form>
@@ -245,10 +277,10 @@
         import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Tên định danh chung cho lớp (Đã xóa khoảng trắng để chuẩn hóa kết nối online)
+        // TÃªn Ä‘á»‹nh danh chung cho lá»›p (ÄÃ£ xÃ³a khoáº£ng tráº¯ng Ä‘á»ƒ chuáº©n hÃ³a káº¿t ná»‘i online)
         const appId = 'thi-dua-lop-71-nh-2025-2026';
 
-        // Cấu hình Firebase công khai trực tiếp
+        // Cáº¥u hÃ¬nh Firebase cÃ´ng khai trá»±c tiáº¿p
         
 const firebaseConfig = {
   apiKey: "AIzaSyCQF4C0DcSce_bNDOBhj6KbsjFnrCJjRXI",
@@ -259,15 +291,16 @@ const firebaseConfig = {
   appId: "1:384461302475:web:c2db4957b0678f0299894e"
 };
         const DEFAULT_TEAMS = [
-            { id: 1, label: "Tổ 1", color: "#FBC02D", bgClass: "bg-amber-400", textClass: "text-amber-400", borderClass: "border-amber-400", steps: 100, icon: "🦆" },
-            { id: 2, label: "Tổ 2", color: "#EC4899", bgClass: "bg-pink-500", textClass: "text-pink-400", borderClass: "border-pink-500", steps: 100, icon: "🐥" },
-            { id: 3, label: "Tổ 3", color: "#38BDF8", bgClass: "bg-sky-400", textClass: "text-sky-400", borderClass: "border-sky-400", steps: 100, icon: "🦢" },
-            { id: 4, label: "Tổ 4", color: "#C084FC", bgClass: "bg-purple-400", textClass: "text-purple-400", borderClass: "border-purple-400", steps: 100, icon: "🦩" },
+            { id: 1, label: "Tá»• 1", color: "#FBC02D", bgClass: "bg-amber-400", textClass: "text-amber-400", borderClass: "border-amber-400", steps: 100, icon: "ðŸ¦†" },
+            { id: 2, label: "Tá»• 2", color: "#EC4899", bgClass: "bg-pink-500", textClass: "text-pink-400", borderClass: "border-pink-500", steps: 100, icon: "ðŸ¥" },
+            { id: 3, label: "Tá»• 3", color: "#38BDF8", bgClass: "bg-sky-400", textClass: "text-sky-400", borderClass: "border-sky-400", steps: 100, icon: "ðŸ¦¢" },
+            { id: 4, label: "Tá»• 4", color: "#C084FC", bgClass: "bg-purple-400", textClass: "text-purple-400", borderClass: "border-purple-400", steps: 100, icon: "ðŸ¦©" },
         ];
 
         let state = {
             teams: JSON.parse(JSON.stringify(DEFAULT_TEAMS)),
             history: [],
+            announcements: [],
             adminPin: "1234",
             activeAdminSessionId: null,
             mySessionId: Math.random().toString(36).substring(2, 9),
@@ -280,7 +313,7 @@ const firebaseConfig = {
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // Đường dẫn trực tiếp lưu trữ chung cho room appId trên Firestore
+        // ÄÆ°á»ng dáº«n trá»±c tiáº¿p lÆ°u trá»¯ chung cho room appId trÃªn Firestore
         const raceDocRef = doc(db, 'public_duck_races', appId);
 
         function loadLocalState() {
@@ -290,6 +323,7 @@ const firebaseConfig = {
                     const parsed = JSON.parse(saved);
                     if (parsed.teams) state.teams = parsed.teams;
                     if (parsed.history) state.history = parsed.history;
+                    if (Array.isArray(parsed.announcements)) state.announcements = parsed.announcements;
                     if (parsed.adminPin) state.adminPin = parsed.adminPin;
                 }
             } catch (e) {}
@@ -300,6 +334,7 @@ const firebaseConfig = {
                 localStorage.setItem('DUCK_RACE_' + appId, JSON.stringify({
                     teams: state.teams,
                     history: state.history,
+                    announcements: state.announcements,
                     adminPin: state.adminPin
                 }));
             } catch (e) {}
@@ -333,13 +368,14 @@ onAuthStateChanged(auth, (user) => {
                     if (data) {
                         if (Array.isArray(data.teams)) state.teams = data.teams;
                         if (Array.isArray(data.history)) state.history = data.history;
+                        if (Array.isArray(data.announcements)) state.announcements = data.announcements;
                         if (data.adminPin) state.adminPin = data.adminPin;
                         
                         state.activeAdminSessionId = data.activeAdminSessionId || null;
                         if (state.isAdmin && state.activeAdminSessionId && state.activeAdminSessionId !== state.mySessionId) {
                             state.isAdmin = false;
                             updateAdminBtnUI();
-                            showToast("Máy khác vừa đăng nhập Quản Trị Viên!", "error");
+                            showToast("MÃ¡y khÃ¡c vá»«a Ä‘Äƒng nháº­p Quáº£n Trá»‹ ViÃªn!", "error");
                         }
 
                         saveLocalState();
@@ -354,10 +390,11 @@ onAuthStateChanged(auth, (user) => {
             });
         }
 
-        async function saveRaceState(teamsData = state.teams, historyData = state.history, pin = state.adminPin, adminSession = state.activeAdminSessionId) {
+        async function saveRaceState(teamsData = state.teams, historyData = state.history, pin = state.adminPin, adminSession = state.activeAdminSessionId, announcementsData = state.announcements) {
             state.teams = teamsData;
             state.history = historyData;
             state.adminPin = pin;
+            state.announcements = announcementsData;
             saveLocalState();
             render();
 
@@ -366,6 +403,7 @@ onAuthStateChanged(auth, (user) => {
                 await setDoc(raceDocRef, {
                     teams: teamsData,
                     history: historyData,
+                    announcements: announcementsData,
                     adminPin: pin,
                     activeAdminSessionId: adminSession,
                     updatedAt: new Date().toISOString()
@@ -380,12 +418,12 @@ onAuthStateChanged(auth, (user) => {
             
             let val = parseInt(input.value, 10);
             if (isNaN(val) || val === 0) {
-                showToast("Vui lòng nhập số bước hợp lệ!", "error");
+                showToast("Vui lÃ²ng nháº­p sá»‘ bÆ°á»›c há»£p lá»‡!", "error");
                 return;
             }
 
             if (isSubtract) val = -Math.abs(val);
-            let reason = reasonInput.value.trim() || (isSubtract ? "Trừ điểm thi đua" : "Cộng điểm thi đua");
+            let reason = reasonInput.value.trim() || (isSubtract ? "Trá»« Ä‘iá»ƒm thi Ä‘ua" : "Cá»™ng Ä‘iá»ƒm thi Ä‘ua");
 
             const targetTeam = state.teams.find(t => t.id === teamId);
             if (!targetTeam) return;
@@ -417,7 +455,7 @@ onAuthStateChanged(auth, (user) => {
             
             input.value = '';
             reasonInput.value = '';
-            showToast(`Đã ${val > 0 ? 'cộng' : 'trừ'} bước cho ${targetTeam.label}!`, "success");
+            showToast(`ÄÃ£ ${val > 0 ? 'cá»™ng' : 'trá»«'} bÆ°á»›c cho ${targetTeam.label}!`, "success");
         };
 
         window.setTotalStepsByInput = function(teamId) {
@@ -427,14 +465,14 @@ onAuthStateChanged(auth, (user) => {
             
             const val = parseInt(input.value, 10);
             if (isNaN(val)) {
-                showToast("Vui lòng nhập tổng số bước mới!", "error");
+                showToast("Vui lÃ²ng nháº­p tá»•ng sá»‘ bÆ°á»›c má»›i!", "error");
                 return;
             }
 
             const targetTeam = state.teams.find(t => t.id === teamId);
             if (!targetTeam) return;
 
-            let reason = reasonInput.value.trim() || "Cập nhật lại tổng số bước";
+            let reason = reasonInput.value.trim() || "Cáº­p nháº­t láº¡i tá»•ng sá»‘ bÆ°á»›c";
             const diff = val - targetTeam.steps;
 
             const updatedTeams = state.teams.map(team => {
@@ -451,7 +489,7 @@ onAuthStateChanged(auth, (user) => {
                 teamLabel: targetTeam.label,
                 teamIcon: targetTeam.icon,
                 delta: diff,
-                reason: `[Cập nhật tổng] ${reason}`,
+                reason: `[Cáº­p nháº­t tá»•ng] ${reason}`,
                 newTotal: Math.max(0, val)
             };
 
@@ -460,7 +498,7 @@ onAuthStateChanged(auth, (user) => {
             saveRaceState(updatedTeams, updatedHistory, state.adminPin, state.mySessionId);
             input.value = '';
             reasonInput.value = '';
-            showToast(`Đã cập nhật tổng bước cho ${targetTeam.label}!`, "success");
+            showToast(`ÄÃ£ cáº­p nháº­t tá»•ng bÆ°á»›c cho ${targetTeam.label}!`, "success");
         };
 
         function render() {
@@ -470,6 +508,7 @@ onAuthStateChanged(auth, (user) => {
             renderCards();
             renderTracks();
             renderHistory();
+            renderAnnouncements();
             renderAdminPanel();
         }
 
@@ -480,9 +519,9 @@ onAuthStateChanged(auth, (user) => {
             container.innerHTML = state.teams.map(team => {
                 const rank = sorted.findIndex(t => t.id === team.id) + 1;
                 let rankBadge = `#${rank}`;
-                if (rank === 1) rankBadge = '🥇 Hạng 1';
-                else if (rank === 2) rankBadge = '🥈 Hạng 2';
-                else if (rank === 3) rankBadge = '🥉 Hạng 3';
+                if (rank === 1) rankBadge = 'ðŸ¥‡ Háº¡ng 1';
+                else if (rank === 2) rankBadge = 'ðŸ¥ˆ Háº¡ng 2';
+                else if (rank === 3) rankBadge = 'ðŸ¥‰ Háº¡ng 3';
 
                 return `
                     <div class="bg-chalkBoard rounded-2xl p-4 border border-emerald-800 shadow-md flex flex-col justify-between">
@@ -496,7 +535,7 @@ onAuthStateChanged(auth, (user) => {
                             <h4 class="font-bold text-white text-base">${team.label}</h4>
                             <div class="flex items-baseline gap-1 mt-1">
                                 <span class="text-3xl font-bold ${team.textClass}">${team.steps}</span>
-                                <span class="text-xs text-emerald-400 font-bold">bước</span>
+                                <span class="text-xs text-emerald-400 font-bold">bÆ°á»›c</span>
                             </div>
                         </div>
                     </div>
@@ -517,7 +556,7 @@ onAuthStateChanged(auth, (user) => {
                                 <span class="w-3 h-3 rounded-full inline-block" style="background-color: ${team.color}"></span>
                                 ${team.label} (${team.icon})
                             </span>
-                            <span class="${team.textClass} font-mono text-sm">${team.steps} Bước</span>
+                            <span class="${team.textClass} font-mono text-sm">${team.steps} BÆ°á»›c</span>
                         </div>
 
                         <div class="relative h-14 bg-chalkSoft/60 rounded-xl border border-emerald-700/60 flex items-center px-4 overflow-hidden">
@@ -543,7 +582,7 @@ onAuthStateChanged(auth, (user) => {
             }
 
             if (!state.history || state.history.length === 0) {
-                container.innerHTML = `<p class="text-xs text-emerald-400/80 italic text-center py-2">Chưa có lịch sử thay đổi nào.</p>`;
+                container.innerHTML = `<p class="text-xs text-emerald-400/80 italic text-center py-2">ChÆ°a cÃ³ lá»‹ch sá»­ thay Ä‘á»•i nÃ o.</p>`;
                 return;
             }
 
@@ -557,15 +596,57 @@ onAuthStateChanged(auth, (user) => {
                         <div class="flex items-center space-x-2.5">
                             <span class="text-emerald-400 font-mono text-[11px] bg-chalkBoard px-2 py-1 rounded border border-emerald-900">${item.time}</span>
                             <span class="font-bold text-white flex items-center gap-1">${item.teamIcon} ${item.teamLabel}</span>
-                            <span class="px-2 py-0.5 rounded font-bold border ${badgeColor}">${sign} bước</span>
+                            <span class="px-2 py-0.5 rounded font-bold border ${badgeColor}">${sign} bÆ°á»›c</span>
                         </div>
                         <div class="text-emerald-200 flex-1 sm:text-right">
-                            <span class="italic text-slate-300">Lý do:</span> <span class="font-semibold text-white">${item.reason}</span> 
-                            <span class="text-emerald-400 ml-2">(Tổng: <strong class="text-amber-300">${item.newTotal}</strong>)</span>
+                            <span class="italic text-slate-300">LÃ½ do:</span> <span class="font-semibold text-white">${item.reason}</span> 
+                            <span class="text-emerald-400 ml-2">(Tá»•ng: <strong class="text-amber-300">${item.newTotal}</strong>)</span>
                         </div>
                     </div>
                 `;
             }).join('');
+        }
+
+        function escapeHtml(value) {
+            return String(value ?? '').replace(/[&<>"']/g, char => ({
+                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+            })[char]);
+        }
+
+        function renderAnnouncements() {
+            const container = document.getElementById('announcementsContainer');
+            if (!container) return;
+
+            if (!Array.isArray(state.announcements) || state.announcements.length === 0) {
+                container.innerHTML = `<p class="text-xs text-emerald-400/80 italic text-center py-2">ChÆ°a cÃ³ thÃ´ng bÃ¡o nÃ o.</p>`;
+                return;
+            }
+
+            container.innerHTML = state.announcements.map(item => `
+                <article class="bg-chalkSoft/40 border border-emerald-800/60 rounded-xl p-3 space-y-2">
+                    <div class="flex flex-wrap items-start justify-between gap-2">
+                        <div class="min-w-0 flex-1">
+                            <h4 class="text-sm font-bold text-white break-words">${escapeHtml(item.title || 'ThÃ´ng bÃ¡o tá»« quáº£n trá»‹ viÃªn')}</h4>
+                            <p class="text-[10px] text-emerald-400 mt-1">${escapeHtml(item.time || '')} Â· <span class="font-semibold">Quáº£n trá»‹ viÃªn</span></p>
+                        </div>
+                        ${state.isAdmin ? `<button type="button" data-delete-announcement="${escapeHtml(item.id)}" class="shrink-0 px-2.5 py-1 rounded-lg bg-rose-500/20 text-rose-300 hover:bg-rose-500/30 text-[11px] font-bold border border-rose-500/40 transition"><i class="fa-solid fa-trash-can"></i> XÃ³a</button>` : ''}
+                    </div>
+                    <p class="text-xs text-emerald-100 whitespace-pre-wrap break-words">${escapeHtml(item.message || '')}</p>
+                </article>
+            `).join('');
+
+            if (state.isAdmin) {
+                container.querySelectorAll('[data-delete-announcement]').forEach(button => {
+                    button.addEventListener('click', () => {
+                        if (!state.isAdmin) return;
+                        const id = button.getAttribute('data-delete-announcement');
+                        if (!confirm('Báº¡n cÃ³ cháº¯c cháº¯n muá»‘n xÃ³a thÃ´ng bÃ¡o nÃ y khÃ´ng?')) return;
+                        const updated = state.announcements.filter(item => item.id !== id);
+                        saveRaceState(state.teams, state.history, state.adminPin, state.mySessionId, updated);
+                        showToast('ÄÃ£ xÃ³a thÃ´ng bÃ¡o!', 'success');
+                    });
+                });
+            }
         }
 
         function renderAdminPanel() {
@@ -587,40 +668,40 @@ onAuthStateChanged(auth, (user) => {
                                 <span class="font-bold text-white text-base">${team.label}</span>
                             </div>
                             <span class="text-lg font-bold ${team.textClass} bg-slate-900 px-3 py-0.5 rounded-lg border border-slate-800 font-mono">
-                                ${team.steps} bước
+                                ${team.steps} bÆ°á»›c
                             </span>
                         </div>
 
                         <!-- Option 1: Add/Subtract with Reason -->
                         <div class="space-y-2">
-                            <label class="text-[11px] font-bold text-amber-300 uppercase tracking-wider block">Cộng / Trừ Bước & Lý Do:</label>
+                            <label class="text-[11px] font-bold text-amber-300 uppercase tracking-wider block">Cá»™ng / Trá»« BÆ°á»›c & LÃ½ Do:</label>
                             <div class="flex gap-2">
-                                <input type="number" id="deltaInput-${team.id}" placeholder="Số bước..." 
+                                <input type="number" id="deltaInput-${team.id}" placeholder="Sá»‘ bÆ°á»›c..." 
                                     class="w-1/3 bg-slate-900 border border-slate-700 text-white text-xs rounded-lg px-3 py-2 focus:outline-none focus:border-amber-400">
-                                <input type="text" id="reasonInput-${team.id}" placeholder="Nhập lý do..." 
+                                <input type="text" id="reasonInput-${team.id}" placeholder="Nháº­p lÃ½ do..." 
                                     class="w-2/3 bg-slate-900 border border-slate-700 text-white text-xs rounded-lg px-3 py-2 focus:outline-none focus:border-amber-400">
                             </div>
                             <div class="flex gap-2 pt-1">
                                 <button onclick="addStepsByInput(${team.id}, false)" class="flex-1 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-bold transition">
-                                    <i class="fa-solid fa-plus"></i> Cộng Điểm
+                                    <i class="fa-solid fa-plus"></i> Cá»™ng Äiá»ƒm
                                 </button>
                                 <button onclick="addStepsByInput(${team.id}, true)" class="flex-1 py-2 bg-rose-600 hover:bg-rose-500 text-white rounded-lg text-xs font-bold transition">
-                                    <i class="fa-solid fa-minus"></i> Trừ Điểm
+                                    <i class="fa-solid fa-minus"></i> Trá»« Äiá»ƒm
                                 </button>
                             </div>
                         </div>
 
                         <!-- Option 2: Set Total Steps Directly -->
                         <div class="space-y-2 pt-2 border-t border-slate-900">
-                            <label class="text-[11px] font-bold text-sky-300 uppercase tracking-wider block">Ghi Đè Tổng Số Bước:</label>
+                            <label class="text-[11px] font-bold text-sky-300 uppercase tracking-wider block">Ghi ÄÃ¨ Tá»•ng Sá»‘ BÆ°á»›c:</label>
                             <div class="flex gap-2">
-                                <input type="number" id="totalInput-${team.id}" placeholder="Tổng mới..." 
+                                <input type="number" id="totalInput-${team.id}" placeholder="Tá»•ng má»›i..." 
                                     class="w-1/3 bg-slate-900 border border-slate-700 text-white text-xs rounded-lg px-3 py-2 focus:outline-none focus:border-sky-400">
-                                <input type="text" id="reasonTotalInput-${team.id}" placeholder="Lý do ghi đè..." 
+                                <input type="text" id="reasonTotalInput-${team.id}" placeholder="LÃ½ do ghi Ä‘Ã¨..." 
                                     class="w-2/3 bg-slate-900 border border-slate-700 text-white text-xs rounded-lg px-3 py-2 focus:outline-none focus:border-sky-400">
                             </div>
                             <button onclick="setTotalStepsByInput(${team.id})" class="w-full py-2 bg-sky-500 hover:bg-sky-400 text-slate-950 rounded-lg text-xs font-bold transition">
-                                Cập Nhật Tổng Bước
+                                Cáº­p Nháº­t Tá»•ng BÆ°á»›c
                             </button>
                         </div>
                     </div>
@@ -645,14 +726,14 @@ onAuthStateChanged(auth, (user) => {
             if (state.isAdmin) {
                 adminToggleBtn.className = "flex items-center space-x-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold transition bg-emerald-500 text-slate-950 hover:bg-emerald-400 shadow";
                 adminLockIcon.className = "fa-solid fa-unlock";
-                adminBtnText.textContent = "Đã Đăng Nhập Admin";
-                adminStatusTag.textContent = "Chế Độ Quản Trị Viên";
+                adminBtnText.textContent = "ÄÃ£ ÄÄƒng Nháº­p Admin";
+                adminStatusTag.textContent = "Cháº¿ Äá»™ Quáº£n Trá»‹ ViÃªn";
                 adminStatusTag.className = "text-xs font-bold mt-0.5 text-emerald-400";
             } else {
                 adminToggleBtn.className = "flex items-center space-x-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold transition bg-amber-500 text-slate-950 hover:bg-amber-400 shadow";
                 adminLockIcon.className = "fa-solid fa-lock";
-                adminBtnText.textContent = "Quản Trị Viên";
-                adminStatusTag.textContent = "Chế Độ Người Xem";
+                adminBtnText.textContent = "Quáº£n Trá»‹ ViÃªn";
+                adminStatusTag.textContent = "Cháº¿ Äá»™ NgÆ°á»i Xem";
                 adminStatusTag.className = "text-xs font-bold mt-0.5 text-amber-300";
             }
         }
@@ -662,7 +743,7 @@ onAuthStateChanged(auth, (user) => {
                 state.isAdmin = false;
                 saveRaceState(state.teams, state.history, state.adminPin, null);
                 updateAdminBtnUI();
-                showToast("Đã thoát chế độ Quản Trị Viên", "info");
+                showToast("ÄÃ£ thoÃ¡t cháº¿ Ä‘á»™ Quáº£n Trá»‹ ViÃªn", "info");
             } else {
                 pinModal.classList.remove('hidden');
                 pinInput.value = '';
@@ -683,7 +764,7 @@ onAuthStateChanged(auth, (user) => {
                 pinModal.classList.add('hidden');
                 saveRaceState(state.teams, state.history, state.adminPin, state.mySessionId);
                 updateAdminBtnUI();
-                showToast("Đăng nhập Quản Trị Viên thành công!", "success");
+                showToast("ÄÄƒng nháº­p Quáº£n Trá»‹ ViÃªn thÃ nh cÃ´ng!", "success");
             } else {
                 pinError.classList.remove('hidden');
             }
@@ -693,7 +774,7 @@ onAuthStateChanged(auth, (user) => {
             state.isAdmin = false;
             saveRaceState(state.teams, state.history, state.adminPin, null);
             updateAdminBtnUI();
-            showToast("Đã thoát Quản Trị Viên", "info");
+            showToast("ÄÃ£ thoÃ¡t Quáº£n Trá»‹ ViÃªn", "info");
         });
 
         // Change PIN
@@ -722,13 +803,13 @@ onAuthStateChanged(auth, (user) => {
             const newVal = newPinInput.value.trim();
 
             if (oldVal !== state.adminPin) {
-                changePinError.textContent = "Mật mã hiện tại không đúng!";
+                changePinError.textContent = "Máº­t mÃ£ hiá»‡n táº¡i khÃ´ng Ä‘Ãºng!";
                 changePinError.classList.remove('hidden');
                 return;
             }
 
             if (newVal.length < 4) {
-                changePinError.textContent = "Mật mã mới phải có ít nhất 4 ký tự!";
+                changePinError.textContent = "Máº­t mÃ£ má»›i pháº£i cÃ³ Ã­t nháº¥t 4 kÃ½ tá»±!";
                 changePinError.classList.remove('hidden');
                 return;
             }
@@ -736,28 +817,62 @@ onAuthStateChanged(auth, (user) => {
             state.adminPin = newVal;
             saveRaceState(state.teams, state.history, state.adminPin, state.activeAdminSessionId);
             changePinModal.classList.add('hidden');
-            showToast("Đã đổi mật mã Admin thành công!", "success");
+            showToast("ÄÃ£ Ä‘á»•i máº­t mÃ£ Admin thÃ nh cÃ´ng!", "success");
+        });
+
+        // Admin-only announcements / messages
+        const publishAnnouncementBtn = document.getElementById('publishAnnouncementBtn');
+        publishAnnouncementBtn.addEventListener('click', () => {
+            if (!state.isAdmin) return;
+
+            const titleInput = document.getElementById('announcementTitleInput');
+            const messageInput = document.getElementById('announcementMessageInput');
+            const message = messageInput.value.trim();
+            const title = titleInput.value.trim();
+
+            if (!message) {
+                showToast('Vui lÃ²ng nháº­p ná»™i dung thÃ´ng bÃ¡o!', 'error');
+                messageInput.focus();
+                return;
+            }
+
+            const timeStr = new Date().toLocaleString('vi-VN', {
+                day: '2-digit', month: '2-digit', year: 'numeric',
+                hour: '2-digit', minute: '2-digit'
+            });
+            const announcement = {
+                id: Math.random().toString(36).substring(2, 11),
+                title: title,
+                message: message,
+                time: timeStr
+            };
+            const updatedAnnouncements = [announcement, ...state.announcements].slice(0, 100);
+            saveRaceState(state.teams, state.history, state.adminPin, state.mySessionId, updatedAnnouncements);
+
+            titleInput.value = '';
+            messageInput.value = '';
+            showToast('ÄÃ£ Ä‘Äƒng thÃ´ng bÃ¡o cho má»i ngÆ°á»i!', 'success');
         });
 
         // Reset 100 Steps
         const resetAllBtn = document.getElementById('resetAllBtn');
         resetAllBtn.addEventListener('click', () => {
             if (!state.isAdmin) return;
-            if (confirm("Bạn có chắc chắn muốn đặt lại tất cả các tổ về 100 bước không?")) {
+            if (confirm("Báº¡n cÃ³ cháº¯c cháº¯n muá»‘n Ä‘áº·t láº¡i táº¥t cáº£ cÃ¡c tá»• vá» 100 bÆ°á»›c khÃ´ng?")) {
                 const resetTeams = state.teams.map(t => ({ ...t, steps: 100 }));
                 const timeStr = new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
                 const historyItem = {
                     id: Math.random().toString(36).substring(2, 9),
                     time: timeStr,
-                    teamLabel: "Hệ thống",
-                    teamIcon: "⚙️",
+                    teamLabel: "Há»‡ thá»‘ng",
+                    teamIcon: "âš™ï¸",
                     delta: 0,
-                    reason: "Đặt lại toàn bộ các tổ về 100 bước",
+                    reason: "Äáº·t láº¡i toÃ n bá»™ cÃ¡c tá»• vá» 100 bÆ°á»›c",
                     newTotal: 100
                 };
                 const updatedHistory = [historyItem, ...state.history].slice(0, 50);
                 saveRaceState(resetTeams, updatedHistory, state.adminPin, state.mySessionId);
-                showToast("Đã đặt lại toàn bộ các tổ về 100 bước!", "success");
+                showToast("ÄÃ£ Ä‘áº·t láº¡i toÃ n bá»™ cÃ¡c tá»• vá» 100 bÆ°á»›c!", "success");
             }
         });
 
@@ -765,9 +880,9 @@ onAuthStateChanged(auth, (user) => {
         const clearHistoryBtn = document.getElementById('clearHistoryBtn');
         clearHistoryBtn.addEventListener('click', () => {
             if (!state.isAdmin) return;
-            if (confirm("Bạn có chắc chắn muốn xóa toàn bộ lịch sử không?")) {
+            if (confirm("Báº¡n cÃ³ cháº¯c cháº¯n muá»‘n xÃ³a toÃ n bá»™ lá»‹ch sá»­ khÃ´ng?")) {
                 saveRaceState(state.teams, [], state.adminPin, state.mySessionId);
-                showToast("Đã xóa lịch sử!", "success");
+                showToast("ÄÃ£ xÃ³a lá»‹ch sá»­!", "success");
             }
         });
 
@@ -776,9 +891,9 @@ onAuthStateChanged(auth, (user) => {
         shareBtn.addEventListener('click', () => {
             const url = window.location.href;
             navigator.clipboard.writeText(url).then(() => {
-                showToast("Đã sao chép đường link vào bộ nhớ tạm!", "success");
+                showToast("ÄÃ£ sao chÃ©p Ä‘Æ°á»ng link vÃ o bá»™ nhá»› táº¡m!", "success");
             }).catch(() => {
-                prompt("Sao chép đường link này để chia sẻ:", url);
+                prompt("Sao chÃ©p Ä‘Æ°á»ng link nÃ y Ä‘á»ƒ chia sáº»:", url);
             });
         });
 
