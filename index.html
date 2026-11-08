@@ -143,6 +143,35 @@
         </section>
 
         <!-- Admin Control Panel -->
+        <!-- NOTIFICATION SECTION -->
+<section class="bg-chalkBoard rounded-2xl p-4 sm:p-6
+    shadow-xl border border-emerald-800 space-y-3">
+
+    <div class="flex items-center justify-between
+        border-b border-emerald-800 pb-3">
+
+        <h3 class="text-lg font-bold text-amber-300">
+            <i class="fa-solid fa-bell"></i>
+            Thông Báo Từ Quản Trị Viên
+        </h3>
+
+        <button id="clearNotificationsBtn"
+            class="hidden px-2.5 py-1 rounded-lg
+            bg-rose-500/20 text-rose-300 text-xs font-bold">
+            <i class="fa-solid fa-trash"></i>
+            Xóa tất cả
+        </button>
+    </div>
+
+    <div id="notificationsContainer"
+        class="max-h-80 overflow-y-auto space-y-2">
+
+        <p class="text-xs text-emerald-400 text-center">
+            Chưa có thông báo nào.
+        </p>
+
+    </div>
+</section>
         <section id="adminPanel" class="hidden bg-slate-900 rounded-2xl p-5 sm:p-6 text-white shadow-2xl space-y-6 border border-amber-500/30">
             <div class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-800 pb-4">
                 <div>
@@ -168,6 +197,30 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="adminControlsGrid">
                 <!-- Controls rendered via JS -->
             </div>
+            <!-- ADMIN NOTIFICATION COMPOSER -->
+<div class="border-t border-slate-700 pt-4 space-y-3">
+
+    <h3 class="text-amber-400 font-bold">
+        <i class="fa-solid fa-paper-plane"></i>
+        Gửi thông báo
+    </h3>
+
+    <textarea id="notificationInput"
+        rows="3"
+        maxlength="1000"
+        placeholder="Nhập nội dung thông báo..."
+        class="w-full bg-slate-950 border border-slate-700
+        rounded-xl p-3 text-white text-sm">
+    </textarea>
+
+    <button onclick="publishNotification()"
+        class="w-full py-2.5 rounded-xl bg-amber-400
+        text-slate-950 font-bold text-sm">
+        <i class="fa-solid fa-paper-plane"></i>
+        Đăng thông báo
+    </button>
+
+</div>
         </section>
 
     </main>
@@ -268,6 +321,7 @@ const firebaseConfig = {
         let state = {
             teams: JSON.parse(JSON.stringify(DEFAULT_TEAMS)),
             history: [],
+            notifications: [],
             adminPin: "1234",
             activeAdminSessionId: null,
             mySessionId: Math.random().toString(36).substring(2, 9),
@@ -283,7 +337,8 @@ const firebaseConfig = {
         // Đường dẫn trực tiếp lưu trữ chung cho room appId trên Firestore
         const raceDocRef = doc(db, 'public_duck_races', appId);
 
-        function loadLocalState() {
+        function loadLocalState(if (Array.isArray(parsed.notifications))
+    state.notifications = parsed.notifications;) {
             try {
                 const saved = localStorage.getItem('DUCK_RACE_' + appId);
                 if (saved) {
@@ -300,6 +355,7 @@ const firebaseConfig = {
                 localStorage.setItem('DUCK_RACE_' + appId, JSON.stringify({
                     teams: state.teams,
                     history: state.history,
+                    notifications: state.notifications,
                     adminPin: state.adminPin
                 }));
             } catch (e) {}
@@ -333,6 +389,8 @@ onAuthStateChanged(auth, (user) => {
                     if (data) {
                         if (Array.isArray(data.teams)) state.teams = data.teams;
                         if (Array.isArray(data.history)) state.history = data.history;
+                        if (Array.isArray(data.notifications))
+    state.notifications = data.notifications;
                         if (data.adminPin) state.adminPin = data.adminPin;
                         
                         state.activeAdminSessionId = data.activeAdminSessionId || null;
@@ -354,9 +412,16 @@ onAuthStateChanged(auth, (user) => {
             });
         }
 
-        async function saveRaceState(teamsData = state.teams, historyData = state.history, pin = state.adminPin, adminSession = state.activeAdminSessionId) {
+     async function saveRaceState(
+    teamsData = state.teams,
+    historyData = state.history,
+    pin = state.adminPin,
+    adminSession = state.activeAdminSessionId,
+    notificationsData = state.notifications
+) {
             state.teams = teamsData;
             state.history = historyData;
+         state.notifications = notificationsData;
             state.adminPin = pin;
             saveLocalState();
             render();
@@ -366,6 +431,7 @@ onAuthStateChanged(auth, (user) => {
                 await setDoc(raceDocRef, {
                     teams: teamsData,
                     history: historyData,
+                    notifications: notificationsData,
                     adminPin: pin,
                     activeAdminSessionId: adminSession,
                     updatedAt: new Date().toISOString()
@@ -470,6 +536,138 @@ onAuthStateChanged(auth, (user) => {
             renderCards();
             renderTracks();
             renderHistory();
+            renderNotifications();
+
+            // HIỂN THỊ THÔNG BÁO
+function renderNotifications() {
+    const container =
+        document.getElementById('notificationsContainer');
+
+    const clearBtn =
+        document.getElementById('clearNotificationsBtn');
+
+    clearBtn.classList.toggle('hidden', !state.isAdmin);
+
+    if (!state.notifications.length) {
+        container.innerHTML = `
+            <p class="text-xs text-emerald-400 text-center py-3">
+                Chưa có thông báo nào.
+            </p>`;
+        return;
+    }
+
+    container.innerHTML = state.notifications.map(item => `
+        <div class="bg-chalkSoft/40 border border-emerald-800
+            rounded-xl p-3 space-y-2">
+
+            <div class="flex justify-between items-center">
+                <span class="text-amber-300 font-bold text-xs">
+                    <i class="fa-solid fa-bullhorn"></i>
+                    Quản trị viên
+                </span>
+
+                <span class="text-emerald-400 text-[10px]">
+                    ${item.time}
+                </span>
+            </div>
+
+            <p class="text-white text-sm whitespace-pre-wrap">
+                ${escapeHTML(item.message)}
+            </p>
+
+            ${state.isAdmin ? `
+                <button onclick="deleteNotification('${item.id}')"
+                    class="text-rose-300 text-xs font-bold">
+                    <i class="fa-solid fa-trash"></i> Xóa thông báo
+                </button>
+            ` : ''}
+        </div>
+    `).join('');
+}
+
+// BẢO VỆ NỘI DUNG HIỂN THỊ
+function escapeHTML(value) {
+    return String(value).replace(/[&<>"']/g, char => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+    })[char]);
+}
+
+// ĐĂNG THÔNG BÁO
+window.publishNotification = function() {
+    if (!state.isAdmin) return;
+
+    const input = document.getElementById('notificationInput');
+    const message = input.value.trim();
+
+    if (!message) {
+        showToast("Vui lòng nhập nội dung!", "error");
+        return;
+    }
+
+    const item = {
+        id: Math.random().toString(36).substring(2, 12),
+        message: message,
+        time: new Date().toLocaleString('vi-VN')
+    };
+
+    const updated = [item, ...state.notifications];
+
+    saveRaceState(
+        state.teams,
+        state.history,
+        state.adminPin,
+        state.mySessionId,
+        updated
+    );
+
+    input.value = '';
+    showToast("Đã đăng thông báo!", "success");
+};
+
+// XÓA MỘT THÔNG BÁO
+window.deleteNotification = function(id) {
+    if (!state.isAdmin) return;
+
+    if (!confirm("Bạn có chắc muốn xóa thông báo này?"))
+        return;
+
+    const updated = state.notifications.filter(
+        item => item.id !== id
+    );
+
+    saveRaceState(
+        state.teams,
+        state.history,
+        state.adminPin,
+        state.mySessionId,
+        updated
+    );
+
+    showToast("Đã xóa thông báo!", "success");
+};
+
+// XÓA TẤT CẢ THÔNG BÁO
+document.getElementById('clearNotificationsBtn')
+    .addEventListener('click', () => {
+
+        if (!state.isAdmin) return;
+
+        if (!confirm("Xóa toàn bộ thông báo?")) return;
+
+        saveRaceState(
+            state.teams,
+            state.history,
+            state.adminPin,
+            state.mySessionId,
+            []
+        );
+
+        showToast("Đã xóa tất cả thông báo!", "success");
+    });
             renderAdminPanel();
         }
 
